@@ -28,28 +28,19 @@ class Main extends Component {
 			1000 * 60 * 10
 		) );
 		let now = today.toISOString();
-		fetch( 'http://data.fmi.fi/fmi-apikey/0cafbc8d-c52c-4c09-aae0-2e15a22f7265/wfs?request=getFeature&storedquery_id=fmi::forecast::hirlam::surface::point::timevaluepair&place=palokka&parameters=Temperature,WindSpeedMS,TotalCloudCover,WindDirection' )
+		let place = this.props.place;
+		fetch( 'http://data.fmi.fi/fmi-apikey/0cafbc8d-c52c-4c09-aae0-2e15a22f7265/wfs?request=getFeature&storedquery_id=fmi::forecast::hirlam::surface::point::timevaluepair&parameters=Temperature,WindSpeedMS,TotalCloudCover,WindDirection&place=' + place )
 			.then(
 				( result ) => {
 					result
 						.text()
 						.then( ( str ) => {
 							parseString( str, function ( err, result ) {
-								let results = result['wfs:FeatureCollection']['wfs:member'];
-								let temperature = results[0]['omso:PointTimeSeriesObservation'][0]['om:result'][0]['wml2:MeasurementTimeseries'][0]['wml2:point'][0]['wml2:MeasurementTVP'][0]['wml2:value'][0];
-								let windspeedmsTime = results[1]['omso:PointTimeSeriesObservation'][0]['om:result'][0]['wml2:MeasurementTimeseries'][0]['wml2:point'][0]['wml2:MeasurementTVP'][0]['wml2:time'][0];
-								let windspeedmsValue = results[1]['omso:PointTimeSeriesObservation'][0]['om:result'][0]['wml2:MeasurementTimeseries'][0]['wml2:point'][0]['wml2:MeasurementTVP'][0]['wml2:value'][0];
-								let totalCloudCoverage = results[2]['omso:PointTimeSeriesObservation'][0]['om:result'][0]['wml2:MeasurementTimeseries'][0]['wml2:point'][0]['wml2:MeasurementTVP'][0]['wml2:value'][0];
-								let windDirection = results[3]['omso:PointTimeSeriesObservation'][0]['om:result'][0]['wml2:MeasurementTimeseries'][0]['wml2:point'][0]['wml2:MeasurementTVP'][0]['wml2:value'][0];
-								this.setState( {
-									isLoaded: true,
-									windSpeed: windspeedmsValue,
-									windDirection: windDirection,
-									temperature: temperature,
-									clouds: totalCloudCoverage,
-									rainProbability: '',
-									time: windspeedmsTime
-								} );
+								let results = '';
+								if ( result['wfs:FeatureCollection'] !== undefined ) {
+									results = result['wfs:FeatureCollection']['wfs:member'] || '';
+								}
+								this.saveToState( results );
 							}.bind( this ) );
 
 						} );
@@ -68,6 +59,35 @@ class Main extends Component {
 			);
 	}
 
+	saveToState( results ) {
+		if ( '' === results ) {
+			this.setState( {
+				isLoaded: true,
+				windSpeed: 0,
+				windDirection: '',
+				temperature: '',
+				clouds: '',
+				rainProbability: '',
+				time: ''
+			} );
+			return;
+		}
+		let temperature = results[0]['omso:PointTimeSeriesObservation'][0]['om:result'][0]['wml2:MeasurementTimeseries'][0]['wml2:point'][0]['wml2:MeasurementTVP'][0]['wml2:value'][0];
+		let windspeedmsTime = results[1]['omso:PointTimeSeriesObservation'][0]['om:result'][0]['wml2:MeasurementTimeseries'][0]['wml2:point'][0]['wml2:MeasurementTVP'][0]['wml2:time'][0];
+		let windspeedmsValue = results[1]['omso:PointTimeSeriesObservation'][0]['om:result'][0]['wml2:MeasurementTimeseries'][0]['wml2:point'][0]['wml2:MeasurementTVP'][0]['wml2:value'][0];
+		let totalCloudCoverage = results[2]['omso:PointTimeSeriesObservation'][0]['om:result'][0]['wml2:MeasurementTimeseries'][0]['wml2:point'][0]['wml2:MeasurementTVP'][0]['wml2:value'][0];
+		let windDirection = results[3]['omso:PointTimeSeriesObservation'][0]['om:result'][0]['wml2:MeasurementTimeseries'][0]['wml2:point'][0]['wml2:MeasurementTVP'][0]['wml2:value'][0];
+		this.setState( {
+			isLoaded: true,
+			windSpeed: windspeedmsValue,
+			windDirection: windDirection,
+			temperature: temperature,
+			clouds: totalCloudCoverage,
+			rainProbability: '',
+			time: windspeedmsTime
+		} );
+	}
+
 	render() {
 
 		if ( this.state.error ) {
@@ -80,12 +100,12 @@ class Main extends Component {
 			<div>
 				<h3>{this.state.time}</h3>
 				<div className={'row'}>
-					<Column className={'column'} title={'Tuulen nopeus'} text={this.state.windSpeed+' m/s'}/>
+					<Column className={'column'} title={'Tuulen nopeus'} text={this.state.windSpeed + ' m/s'}/>
 					<Column className={'column'} title={'Tuulen suunta'} text={this.state.windDirection}/>
 				</div>
 				<div className={'row'}>
-					<Column className={'column'} title={'Lämpötila'} text={this.state.temperature+' °C'}/>
-					<Column className={'column'} title={'Pilvien peitto'} text={this.state.clouds+'%'}/>
+					<Column className={'column'} title={'Lämpötila'} text={this.state.temperature + ' °C'}/>
+					<Column className={'column'} title={'Pilvien peitto'} text={this.state.clouds + '%'}/>
 				</div>
 			</div>
 		);

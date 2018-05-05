@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
-import Header from './components/Header';
-import Main from './components/Main'
-import RainMap from './components/RainMap';
-import Footer from './components/Footer';
-import Logo from './bicycle.svg';
+import { Route, Switch } from 'react-router-dom';
+import SplashScreen from './components/SplashScreen';
+import WeatherScreen from './components/WeatherScreen';
 
 /**
  * Pyöräilysää
@@ -23,12 +21,10 @@ import Logo from './bicycle.svg';
 class App extends Component {
 	render() {
 		return (
-			<div className="App">
-				<Header title={'Pyöräilysää'} logo={Logo} subtitle={'Jyväskylä, Palokka'}/>
-				<Main />
-				<RainMap />
-				<Footer />
-			</div>
+			<Switch>
+				<Route path='/:place' component={WeatherScreen}/>
+				<Route component={SplashScreen}/>
+			</Switch>
 		);
 	}
 }
