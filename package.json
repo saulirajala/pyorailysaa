@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-wordpress": "^2.0.0",
     "husky": "^0.14.3",
     "lint-staged": "^7.0.5",
     "prettier": "^1.12.1",
@@ -12,17 +14,22 @@
     "react-scripts": "1.1.4",
     "xml2js": "^0.4.19"
   },
-   "lint-staged": {
-     "src/**/*.{js,jsx,json,css}": [
-       "prettier --single-quote --write",
-       "git add"
-     ]
-   },
+  "lint-staged": {
+    "src/**/*.{js,jsx,json,css}": [
+      "prettier --single-quote --write",
+      "git add"
+    ]
+  },
   "scripts": {
     "precommit": "lint-staged",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-prettier": "^2.6.0",
+    "prettier": "^1.12.1"
   }
 }
