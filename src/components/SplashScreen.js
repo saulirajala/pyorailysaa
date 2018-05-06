@@ -18,9 +18,15 @@ class SplashScreen extends Component {
 	}
 
 	handleClick() {
-		this.setState({
+
+		// Do nothing, if place is empty.
+		if ( this.state.place === '' ) {
+			return;
+		}
+
+		this.setState( {
 			redirect: true
-		});
+		} );
 	}
 
 	onChange( e ) {
@@ -30,8 +36,10 @@ class SplashScreen extends Component {
 	}
 
 	renderRedirect( e ) {
-		if (this.state.redirect) {
-			return ( <Redirect to={this.state.place} /> );
+		if ( this.state.redirect ) {
+			return (
+				<Redirect to={this.state.place}/>
+			);
 		}
 	}
 
