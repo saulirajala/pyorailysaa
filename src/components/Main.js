@@ -103,11 +103,6 @@ class Main extends Component {
     if (!this.state.isLoaded) {
       return <div>Loading...</div>;
     }
-    let string_ke = 'moi';
-    let totuus = false;
-    if (string_ke === totuus) {
-      console.log('mo');
-    }
 
     let time = new Date(this.state.time);
     return (

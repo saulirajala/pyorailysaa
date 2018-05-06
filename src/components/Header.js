@@ -4,9 +4,7 @@ import { Link } from 'react-router-dom';
 class Header extends Component {
   render() {
     let subtitle = this.props.subtitle;
-    if (subtitle == 'moro') {
-      console.log('moro');
-    }
+
     return (
       <header className="App-header">
         <img src={this.props.logo} />
