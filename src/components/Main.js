@@ -23,27 +23,21 @@ class Main extends Component {
 	}
 
 	componentDidMount() {
-		let today = new Date();
-		let hourago = new Date( today.getTime() - (
-			1000 * 60 * 10
-		) );
-		let now = today.toISOString();
 		let place = this.props.place;
 		fetch( 'http://data.fmi.fi/fmi-apikey/0cafbc8d-c52c-4c09-aae0-2e15a22f7265/wfs?request=getFeature&storedquery_id=fmi::forecast::hirlam::surface::point::timevaluepair&parameters=Temperature,WindSpeedMS,TotalCloudCover,WindDirection&place=' + place )
 			.then(
 				( result ) => {
-					result
-						.text()
-						.then( ( str ) => {
-							parseString( str, function ( err, result ) {
-								let results = '';
-								if ( result['wfs:FeatureCollection'] !== undefined ) {
-									results = result['wfs:FeatureCollection']['wfs:member'] || '';
-								}
-								this.saveToState( results );
-							}.bind( this ) );
-
-						} );
+					if ( ! result.ok ) {
+						this.saveToState( false );
+						return;
+					}
+					result.text()
+					      .then( ( str ) => {
+						      parseString( str, function ( err, result ) {
+							      let results = result['wfs:FeatureCollection']['wfs:member'];
+							      this.saveToState( results );
+						      }.bind( this ) );
+					      } );
 
 				},
 				// Note: it's important to handle errors here
@@ -60,10 +54,10 @@ class Main extends Component {
 	}
 
 	saveToState( results ) {
-		if ( '' === results ) {
+		if ( ! results ) {
 			this.setState( {
 				isLoaded: true,
-				error: {message: "Väärä paikkakunta"},
+				error: {message: 'Väärä paikkakunta'},
 
 			} );
 			return;
