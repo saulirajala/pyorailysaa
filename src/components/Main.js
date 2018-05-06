@@ -53,7 +53,7 @@ class Main extends Component {
 					console.log( error );
 					this.setState( {
 						isLoaded: true,
-						error
+						error,
 					} );
 				}
 			);
@@ -63,12 +63,8 @@ class Main extends Component {
 		if ( '' === results ) {
 			this.setState( {
 				isLoaded: true,
-				windSpeed: 0,
-				windDirection: '',
-				temperature: '',
-				clouds: '',
-				rainProbability: '',
-				time: ''
+				error: {message: "Väärä paikkakunta"},
+
 			} );
 			return;
 		}
@@ -91,11 +87,12 @@ class Main extends Component {
 	render() {
 
 		if ( this.state.error ) {
-			return <div>Error: {this.state.error.message}</div>;
+			return <div>Virhe: {this.state.error.message}</div>;
 		}
 		if ( ! this.state.isLoaded ) {
 			return <div>Loading...</div>;
 		}
+
 		return (
 			<div>
 				<h3>{this.state.time}</h3>
