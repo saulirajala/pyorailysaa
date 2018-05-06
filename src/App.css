@@ -14,7 +14,6 @@
   color: white;
 }
 
-
 .App-title {
   font-size: 1.5rem;
   margin-bottom: 0;
@@ -30,8 +29,12 @@
 }
 
 @keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(35deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(35deg);
+  }
 }
 
 .row {

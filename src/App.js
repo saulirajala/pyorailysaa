@@ -19,14 +19,14 @@ import WeatherScreen from './components/WeatherScreen';
  * * Footer
  */
 class App extends Component {
-	render() {
-		return (
-			<Switch>
-				<Route path='/:place' component={WeatherScreen}/>
-				<Route component={SplashScreen}/>
-			</Switch>
-		);
-	}
+  render() {
+    return (
+      <Switch>
+        <Route path="/:place" component={WeatherScreen} />
+        <Route component={SplashScreen} />
+      </Switch>
+    );
+  }
 }
 
 export default App;

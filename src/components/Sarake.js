@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 
 class Sarake extends Component {
-	render() {
-		return (
-			<div></div>
-		);
-	}
+  render() {
+    return <div />;
+  }
 }
 
 export default Sarake;
