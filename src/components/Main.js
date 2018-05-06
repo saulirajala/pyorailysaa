@@ -108,7 +108,6 @@ class Main extends Component {
     return (
       <div>
         <h3>{time.toLocaleString('fi-FI')}</h3>
-        <h1 />
         <div className={'row'}>
           <Column
             className={'column'}
