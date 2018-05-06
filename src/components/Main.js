@@ -58,7 +58,6 @@ class Main extends Component {
 			this.setState( {
 				isLoaded: true,
 				error: {message: 'Väärä paikkakunta'},
-
 			} );
 			return;
 		}
@@ -83,13 +82,15 @@ class Main extends Component {
 		if ( this.state.error ) {
 			return <div>Virhe: {this.state.error.message}</div>;
 		}
+
 		if ( ! this.state.isLoaded ) {
 			return <div>Loading...</div>;
 		}
 
+		let time = new Date(this.state.time);
 		return (
 			<div>
-				<h3>{this.state.time}</h3>
+				<h3>{time.toLocaleString('fi-FI')}</h3>
 				<div className={'row'}>
 					<Column className={'column'} title={'Tuulen nopeus'} text={this.state.windSpeed + ' m/s'}/>
 					<Column className={'column'} title={'Tuulen suunta'} text={this.state.windDirection}/>
